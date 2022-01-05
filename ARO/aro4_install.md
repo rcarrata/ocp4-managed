@@ -150,3 +150,37 @@ az aro show \
 apiServer=$(az aro show -g $RESOURCEGROUP -n $CLUSTER --query apiserverProfile.url -o tsv)
 echo "This is the API for your cluster: $apiServer"
 ```
+
+## Automated installation of ARO4
+
+If you want to install all the Azure Infrastructure resource prerequisites and the ARO4 cluster in a simple way, we generated a script for automate the whole process described before.
+
+* Get the ARO4 install script:
+
+```sh
+wget https://raw.githubusercontent.com/rcarrata/ocp4-managed/main/ARO/aro4_quick_install.sh
+chmod u+x aro4_quick_install.sh
+```
+
+* Tweak the parameters inside of the cluster to adjust to your region, cluster_name, and network cidrs, among others:
+
+```sh
+export LOCATION=eastus
+export RESOURCEGROUP=example-rg
+export CLUSTER=example
+export VNET_CIDR="10.0.0.0/22"
+export MASTER_SUBNET_CIDR="10.0.0.0/23"
+export WORKER_SUBNET_CIDR="10.0.2.0/23"
+```
+
+* Install the prerequisites and the ARO4 cluster
+
+```sh
+./aro4_quick_install.sh install_cluster
+```
+
+* Retrieve the credentials, console and api details:
+
+```sh
+./aro4_quick_install.sh obtain_info
+```
